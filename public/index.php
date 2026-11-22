@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types=1);
+use Illuminate\Http\Request;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+define('LARAVEL_START', microtime(true));
+
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
 }
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../app/bootstrap.php';
+require __DIR__.'/../vendor/autoload.php';
 
-use App\Core\App;
-
-$app = new App();
-$app->run();
+(require_once __DIR__.'/../bootstrap/app.php')
+    ->handleRequest(Request::capture());

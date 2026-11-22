@@ -816,3 +816,22 @@ select {
         align-items: flex-start;
     }
 }
+
+/* ---------- Reports ---------- */
+
+.report-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.report-card p {
+    flex: 1;
+}
+
+.report-card .btn-block {
+    margin-top: var(--sp-md);
+}
+
+.report-card select {
+    margin-bottom: var(--sp-md);
+}

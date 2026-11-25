@@ -44,6 +44,11 @@
                             <a href="{{ route('veiculos.edit', (string) $vehicle->_id) }}" class="btn btn-sm btn-light">Editar</a>
                             <a href="{{ route('revisoes.history', (string) $vehicle->_id) }}" class="btn btn-sm btn-light">Revisões</a>
                             <a href="{{ route('danos.index', (string) $vehicle->_id) }}" class="btn btn-sm btn-light">Danos</a>
+                            <form method="POST" action="{{ route('veiculos.destroy', (string) $vehicle->_id) }}" class="inline" onsubmit="return confirm('Excluir este veículo permanentemente?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

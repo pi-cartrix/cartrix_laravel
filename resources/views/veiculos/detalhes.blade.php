@@ -7,6 +7,11 @@
         <a href="{{ route('veiculos.edit', (string) $vehicle->_id) }}" class="btn btn-primary">Editar</a>
         <a href="{{ route('revisoes.create', ['vehicle_id' => (string) $vehicle->_id]) }}" class="btn btn-light">Registrar revisão</a>
         <a href="{{ route('danos.create', ['vehicle_id' => (string) $vehicle->_id]) }}" class="btn btn-light">Registrar dano</a>
+        <form method="POST" action="{{ route('veiculos.destroy', (string) $vehicle->_id) }}" class="inline" onsubmit="return confirm('Excluir este veículo permanentemente?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
     </div>
 
     <div class="card-grid">

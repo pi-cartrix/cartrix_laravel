@@ -15,7 +15,7 @@ class AutenticacaoController extends Controller
     public function showLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('veiculos.index');
         }
 
         return view('autenticacao.login', [
@@ -49,14 +49,14 @@ class AutenticacaoController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home'))
+        return redirect()->intended(route('veiculos.index'))
             ->with('success', 'Login realizado com sucesso.');
     }
 
     public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('veiculos.index');
         }
 
         return view('autenticacao.registro', [
@@ -114,7 +114,7 @@ class AutenticacaoController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('home')
+        return redirect()->route('veiculos.index')
             ->with('success', 'Conta criada com sucesso.');
     }
 

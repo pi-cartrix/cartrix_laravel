@@ -5,5 +5,6 @@
         <h1>Frota de veículos</h1>
     </div>
 
+    @include('partials.resumo_frota')
     @include('partials.listagem_veiculos', ['filtersUrl' => '/'])
 @endsection

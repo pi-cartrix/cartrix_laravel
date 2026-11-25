@@ -20,6 +20,7 @@ class VeiculoController extends Controller
         $status = trim((string) $request->query('status', ''));
 
         $vehicles = Veiculo::search($query, $status);
+        $vehicleCount = Veiculo::count();
         $statusCounts = array_fill_keys(array_keys(Veiculo::STATUSES), 0);
 
         foreach ($vehicles as $vehicle) {
@@ -32,6 +33,8 @@ class VeiculoController extends Controller
 
         return view('veiculos.listar', [
             'title' => 'Frota de veículos',
+            'vehicleCount' => $vehicleCount,
+            'monthlyTotal' => $vehicleCount * Veiculo::PRECO_POR_VEICULO,
             'vehicles' => $vehicles,
             'query' => $query,
             'status' => $status,
@@ -52,6 +55,7 @@ class VeiculoController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = [
+            'user_id' => Veiculo::ownerId(),
             'marca' => trim((string) $request->input('marca', '')),
             'modelo' => trim((string) $request->input('modelo', '')),
             'placa' => strtoupper((string) preg_replace('/\s+/', '', (string) $request->input('placa', ''))),

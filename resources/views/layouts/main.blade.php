@@ -14,10 +14,8 @@
 
     <header>
         <nav>
-            <a href="{{ url('/') }}" class="brand">
-                <span class="brand-m">
-                    <span class="stripe-blue-light">C</span><span class="stripe-blue-dark">A</span><span class="stripe-red">R</span>
-                </span>TRIX
+            <a href="{{ auth()->check() ? route('veiculos.index') : url('/') }}" class="brand">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-logo" style="height: 64px; width: auto;">
             </a>
             @auth
                 <span class="nav-sep"></span>

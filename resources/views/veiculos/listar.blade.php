@@ -7,6 +7,8 @@
         <a href="{{ route('veiculos.create') }}" class="btn btn-primary">Cadastrar veículo</a>
     </div>
 
+    @include('partials.resumo_frota')
+
     @if (! empty($statusCounts))
         <div class="status-summary">
             @foreach ($statuses as $key => $label)

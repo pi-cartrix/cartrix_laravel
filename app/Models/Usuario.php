@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 
 class Usuario extends Authenticatable
@@ -30,5 +31,10 @@ class Usuario extends Authenticatable
     public static function findByCnpj(string $cnpj): ?self
     {
         return static::where('cnpj', trim($cnpj))->first();
+    }
+
+    public function veiculos(): HasMany
+    {
+        return $this->hasMany(Veiculo::class, 'user_id', '_id');
     }
 }

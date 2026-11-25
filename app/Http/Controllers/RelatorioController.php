@@ -6,8 +6,10 @@ use App\Models\Dano;
 use App\Models\Revisao;
 use App\Models\Veiculo;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use MongoDB\BSON\ObjectId;
 use Symfony\Component\HttpFoundation\Response;
 
 class RelatorioController extends Controller
@@ -15,13 +17,14 @@ class RelatorioController extends Controller
     public function index(): View
     {
         $vehicles = Veiculo::orderBy('marca')->orderBy('modelo')->get();
+        $vehicleIds = $this->vehicleObjectIds($vehicles);
 
         return view('relatorios.index', [
             'title' => 'Relatórios',
             'vehicles' => $vehicles,
             'vehicleCount' => $vehicles->count(),
-            'revisionCount' => Revisao::count(),
-            'damageCount' => Dano::count(),
+            'revisionCount' => Revisao::whereIn('vehicle_id', $vehicleIds)->count(),
+            'damageCount' => Dano::whereIn('vehicle_id', $vehicleIds)->count(),
         ]);
     }
 
@@ -51,7 +54,10 @@ class RelatorioController extends Controller
     public function revisoes(): Response
     {
         $vehicles = Veiculo::all()->keyBy(fn (Veiculo $vehicle): string => (string) $vehicle->_id);
-        $revisions = Revisao::orderByDesc('data_revisao')->get();
+        $vehicleIds = $this->vehicleObjectIds($vehicles);
+        $revisions = Revisao::whereIn('vehicle_id', $vehicleIds)
+            ->orderByDesc('data_revisao')
+            ->get();
         $total = $revisions->sum(fn (Revisao $revision): float => (float) $revision->valor);
 
         $pdf = Pdf::loadView('relatorios.pdf.revisoes', [
@@ -68,7 +74,10 @@ class RelatorioController extends Controller
     public function danos(): Response
     {
         $vehicles = Veiculo::all()->keyBy(fn (Veiculo $vehicle): string => (string) $vehicle->_id);
-        $damages = Dano::orderByDesc('data')->get();
+        $vehicleIds = $this->vehicleObjectIds($vehicles);
+        $damages = Dano::whereIn('vehicle_id', $vehicleIds)
+            ->orderByDesc('data')
+            ->get();
 
         $pdf = Pdf::loadView('relatorios.pdf.danos', [
             'vehicles' => $vehicles,
@@ -105,5 +114,17 @@ class RelatorioController extends Controller
         $plate = preg_replace('/[^A-Za-z0-9]/', '', (string) $vehicle->placa) ?: 'veiculo';
 
         return $pdf->download('relatorio-veiculo-'.$plate.'-'.now()->format('Ymd-His').'.pdf');
+    }
+
+    /**
+     * Revisoes and danos store vehicle_id as a BSON ObjectId.
+     *
+     * @return ObjectId[]
+     */
+    private function vehicleObjectIds(Collection $vehicles): array
+    {
+        return $vehicles->pluck('_id')
+            ->map(fn ($id): ObjectId => new ObjectId((string) $id))
+            ->all();
     }
 }

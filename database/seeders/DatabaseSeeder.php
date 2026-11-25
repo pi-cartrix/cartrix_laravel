@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         $this->command?->info('  marcas: '.count($marcas).' inseridas.');
 
-        Usuario::create([
+        $demo = Usuario::create([
             'cnpj' => '11222333000181',
             'email' => 'demo@cartrix.com',
             'password' => Hash::make('demo1234'),
@@ -58,6 +58,7 @@ class DatabaseSeeder extends Seeder
                 'quilometragem' => $km,
                 'status' => $status,
                 'danos' => [],
+                'user_id' => (string) $demo->_id,
             ]);
 
             $vehicleIds[] = $vehicle->_id;
@@ -87,6 +88,7 @@ class DatabaseSeeder extends Seeder
                 'quilometragem' => $km,
                 'status' => $status,
                 'danos' => [],
+                'user_id' => (string) $demo->_id,
             ]);
 
             $vehicleIds[] = $vehicle->_id;

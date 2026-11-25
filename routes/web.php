@@ -3,10 +3,13 @@
 use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\DanoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\RevisaoController;
 use App\Http\Controllers\VeiculoController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AutenticacaoController::class, 'showLogin'])->name('login');
@@ -16,8 +19,7 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware('auth')->group(function (): void {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/home', [HomeController::class, 'index']);
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::post('/logout', [AutenticacaoController::class, 'logout'])->name('logout');
 

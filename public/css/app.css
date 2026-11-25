@@ -172,6 +172,12 @@ header .brand .brand-m .stripe-blue-light { color: var(--m-blue-light); }
 header .brand .brand-m .stripe-blue-dark { color: var(--m-blue-dark); }
 header .brand .brand-m .stripe-red { color: var(--m-red); }
 
+.brand-logo {
+    height: 64px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
 header nav a,
 header nav span {
     font-size: 0.875rem;
@@ -814,6 +820,78 @@ select {
     .page-head {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+/* ---------- Landing ---------- */
+
+.landing-hero {
+    max-width: 760px;
+    padding: var(--sp-xxl) 0;
+}
+
+.landing-hero h1 {
+    font-size: 3.5rem;
+    margin: 0 0 var(--sp-md);
+}
+
+.landing-hero p {
+    font-size: 1.125rem;
+    max-width: 620px;
+}
+
+.landing-actions {
+    display: flex;
+    gap: var(--sp-md);
+    flex-wrap: wrap;
+    margin-top: var(--sp-xl);
+}
+
+.landing-section {
+    margin-top: var(--sp-xl);
+}
+
+.landing-section h2 {
+    margin-bottom: var(--sp-lg);
+}
+
+.price-highlight {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+.price-highlight .muted {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    padding: var(--sp-xs) 0;
+    border-bottom: 1px solid var(--hairline);
+    color: var(--body);
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .landing-hero {
+        padding: var(--sp-xl) 0;
+    }
+
+    .landing-hero h1 {
+        font-size: 2.25rem;
+    }
+
+    .price-highlight {
+        font-size: 2rem;
     }
 }
 

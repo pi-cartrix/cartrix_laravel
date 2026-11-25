@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use MongoDB\Laravel\Eloquent\Model;
 
@@ -19,12 +20,39 @@ class Veiculo extends Model
         'quilometragem',
         'status',
         'danos',
+        'user_id',
     ];
 
     protected $casts = [
         'quilometragem' => 'integer',
         'danos' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('owner', function (Builder $builder): void {
+            $ownerId = self::ownerId();
+
+            // No authenticated user (e.g. console/seeders): leave queries unscoped.
+            if ($ownerId === null) {
+                return;
+            }
+
+            $builder->where('user_id', $ownerId);
+        });
+    }
+
+    /**
+     * Id of the authenticated user that owns the vehicle.
+     */
+    public static function ownerId(): ?string
+    {
+        $id = auth()->id();
+
+        return $id === null ? null : (string) $id;
+    }
+
+    public const PRECO_POR_VEICULO = 9.90;
 
     public const STATUSES = [
         'disponivel' => 'Disponível',
